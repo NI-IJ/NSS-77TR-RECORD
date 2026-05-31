@@ -162,120 +162,6 @@ textarea{
 
 
 
-/* RECORD root scrollbar fix */
-html,
-body,
-.viewport,
-.view,
-.logbody{
-  scrollbar-width: thin;
-  scrollbar-color:#ff0000 #000000;
-}
-
-html::-webkit-scrollbar,
-body::-webkit-scrollbar,
-.viewport::-webkit-scrollbar,
-.view::-webkit-scrollbar,
-.logbody::-webkit-scrollbar,
-*::-webkit-scrollbar{
-  width:4px !important;
-  height:4px !important;
-  background:#000000 !important;
-}
-
-html::-webkit-scrollbar-track,
-body::-webkit-scrollbar-track,
-.viewport::-webkit-scrollbar-track,
-.view::-webkit-scrollbar-track,
-.logbody::-webkit-scrollbar-track,
-*::-webkit-scrollbar-track{
-  background:#000000 !important;
-}
-
-html::-webkit-scrollbar-thumb,
-body::-webkit-scrollbar-thumb,
-.viewport::-webkit-scrollbar-thumb,
-.view::-webkit-scrollbar-thumb,
-.logbody::-webkit-scrollbar-thumb,
-*::-webkit-scrollbar-thumb{
-  background:#ff0000 !important;
-  border-radius:0 !important;
-  border:0 !important;
-  background-clip:border-box !important;
-}
-
-html::-webkit-scrollbar-thumb:hover,
-body::-webkit-scrollbar-thumb:hover,
-.viewport::-webkit-scrollbar-thumb:hover,
-.view::-webkit-scrollbar-thumb:hover,
-.logbody::-webkit-scrollbar-thumb:hover,
-*::-webkit-scrollbar-thumb:hover{
-  background:#ff0000 !important;
-}
-
-html::-webkit-scrollbar-corner,
-body::-webkit-scrollbar-corner,
-.viewport::-webkit-scrollbar-corner,
-.view::-webkit-scrollbar-corner,
-.logbody::-webkit-scrollbar-corner,
-*::-webkit-scrollbar-corner{
-  background:#000000 !important;
-}
-
-html::-webkit-scrollbar-button,
-body::-webkit-scrollbar-button,
-.viewport::-webkit-scrollbar-button,
-.view::-webkit-scrollbar-button,
-.logbody::-webkit-scrollbar-button,
-*::-webkit-scrollbar-button{
-  width:4px !important;
-  height:4px !important;
-  background:#000000 !important;
-  display:block !important;
-}
-
-html::-webkit-scrollbar-button:hover,
-body::-webkit-scrollbar-button:hover,
-.viewport::-webkit-scrollbar-button:hover,
-.view::-webkit-scrollbar-button:hover,
-.logbody::-webkit-scrollbar-button:hover,
-*::-webkit-scrollbar-button:hover{
-  background:#000000 !important;
-}
-
-/* keep scrollbar arrow indicators red, no hover fade */
-html::-webkit-scrollbar-button:vertical:decrement,
-body::-webkit-scrollbar-button:vertical:decrement,
-*::-webkit-scrollbar-button:vertical:decrement{
-  background:
-    linear-gradient(135deg, transparent 44%, #ff0000 45% 55%, transparent 56%),
-    #000000 !important;
-}
-
-html::-webkit-scrollbar-button:vertical:increment,
-body::-webkit-scrollbar-button:vertical:increment,
-*::-webkit-scrollbar-button:vertical:increment{
-  background:
-    linear-gradient(315deg, transparent 44%, #ff0000 45% 55%, transparent 56%),
-    #000000 !important;
-}
-
-html::-webkit-scrollbar-button:horizontal:decrement,
-body::-webkit-scrollbar-button:horizontal:decrement,
-*::-webkit-scrollbar-button:horizontal:decrement{
-  background:
-    linear-gradient(225deg, transparent 44%, #ff0000 45% 55%, transparent 56%),
-    #000000 !important;
-}
-
-html::-webkit-scrollbar-button:horizontal:increment,
-body::-webkit-scrollbar-button:horizontal:increment,
-*::-webkit-scrollbar-button:horizontal:increment{
-  background:
-    linear-gradient(45deg, transparent 44%, #ff0000 45% 55%, transparent 56%),
-    #000000 !important;
-}
-
 /* Month labels */
 .dashMonthTitle{
   font-size:12px !important;
@@ -293,98 +179,92 @@ body::-webkit-scrollbar-button:horizontal:increment,
 }
 
 
-/* Hotspot + scrollbar final override */
-.hotspot:active{background:transparent !important;}
 
-html::-webkit-scrollbar-thumb,
-body::-webkit-scrollbar-thumb,
-.viewport::-webkit-scrollbar-thumb,
-.view::-webkit-scrollbar-thumb,
-.logbody::-webkit-scrollbar-thumb,
-*::-webkit-scrollbar-thumb,
-html::-webkit-scrollbar-thumb:hover,
-body::-webkit-scrollbar-thumb:hover,
-.viewport::-webkit-scrollbar-thumb:hover,
-.view::-webkit-scrollbar-thumb:hover,
-.logbody::-webkit-scrollbar-thumb:hover,
-*::-webkit-scrollbar-thumb:hover,
-html::-webkit-scrollbar-thumb:active,
-body::-webkit-scrollbar-thumb:active,
-.viewport::-webkit-scrollbar-thumb:active,
-.view::-webkit-scrollbar-thumb:active,
-.logbody::-webkit-scrollbar-thumb:active,
-*::-webkit-scrollbar-thumb:active,
-html::-webkit-scrollbar-thumb:window-inactive,
-body::-webkit-scrollbar-thumb:window-inactive,
-.viewport::-webkit-scrollbar-thumb:window-inactive,
-.view::-webkit-scrollbar-thumb:window-inactive,
-.logbody::-webkit-scrollbar-thumb:window-inactive,
-*::-webkit-scrollbar-thumb:window-inactive{
-  background:#ff0000 !important;
-  border-radius:0 !important;
-  border:0 !important;
-  opacity:1 !important;
-  filter:none !important;
+/* Root scroll suppression + inner RECORD scrollbar */
+html,
+body{
+  width:100%;
+  max-width:100%;
+  min-height:100%;
+  margin:0;
+  padding:0;
+  overflow-x:hidden !important;
+  background:#000;
 }
 
-html::-webkit-scrollbar-button,
-body::-webkit-scrollbar-button,
-.viewport::-webkit-scrollbar-button,
-.view::-webkit-scrollbar-button,
-.logbody::-webkit-scrollbar-button,
-*::-webkit-scrollbar-button,
-html::-webkit-scrollbar-button:hover,
-body::-webkit-scrollbar-button:hover,
-.viewport::-webkit-scrollbar-button:hover,
-.view::-webkit-scrollbar-button:hover,
-.logbody::-webkit-scrollbar-button:hover,
-*::-webkit-scrollbar-button:hover,
-html::-webkit-scrollbar-button:active,
-body::-webkit-scrollbar-button:active,
-.viewport::-webkit-scrollbar-button:active,
-.view::-webkit-scrollbar-button:active,
-.logbody::-webkit-scrollbar-button:active,
-*::-webkit-scrollbar-button:active{
-  background-color:#000000 !important;
-  opacity:1 !important;
-  filter:none !important;
+body{
+  overscroll-behavior:none;
+}
+
+.stage{
+  overflow:hidden;
+  max-width:100vw;
+}
+
+.layer{
+  overflow:hidden;
+}
+
+.viewport{
+  overflow:hidden;
+}
+
+.view{
+  overflow-y:auto;
+  overflow-x:hidden !important;
+  overscroll-behavior:contain;
+  -webkit-overflow-scrolling:touch;
+}
+
+.logbody{
+  overflow-y:auto;
+  overflow-x:hidden !important;
+}
+
+/* Hide root scrollbar so only inner red scrollbars matter */
+html::-webkit-scrollbar,
+body::-webkit-scrollbar{
+  width:0 !important;
+  height:0 !important;
+  display:none !important;
 }
 
 html,
-body,
-.viewport,
-.view,
-.logbody,
-*{
-  scrollbar-color:#ff0000 #000000 !important;
+body{
+  scrollbar-width:none !important;
 }
 
+/* Inner red scrollbar only */
+.viewport,
+.view,
+.logbody{
+  scrollbar-width:thin;
+  scrollbar-color:#ff0000 #000000;
+}
 
-/* Final scrollbar color lock */
-html::-webkit-scrollbar-thumb,
-body::-webkit-scrollbar-thumb,
+.viewport::-webkit-scrollbar,
+.view::-webkit-scrollbar,
+.logbody::-webkit-scrollbar{
+  width:4px !important;
+  height:4px !important;
+  background:#000000 !important;
+}
+
+.viewport::-webkit-scrollbar-track,
+.view::-webkit-scrollbar-track,
+.logbody::-webkit-scrollbar-track{
+  background:#000000 !important;
+}
+
 .viewport::-webkit-scrollbar-thumb,
 .view::-webkit-scrollbar-thumb,
 .logbody::-webkit-scrollbar-thumb,
-*::-webkit-scrollbar-thumb,
-html::-webkit-scrollbar-thumb:hover,
-body::-webkit-scrollbar-thumb:hover,
 .viewport::-webkit-scrollbar-thumb:hover,
 .view::-webkit-scrollbar-thumb:hover,
 .logbody::-webkit-scrollbar-thumb:hover,
-*::-webkit-scrollbar-thumb:hover,
-html::-webkit-scrollbar-thumb:active,
-body::-webkit-scrollbar-thumb:active,
 .viewport::-webkit-scrollbar-thumb:active,
 .view::-webkit-scrollbar-thumb:active,
-.logbody::-webkit-scrollbar-thumb:active,
-*::-webkit-scrollbar-thumb:active,
-html::-webkit-scrollbar-thumb:window-inactive,
-body::-webkit-scrollbar-thumb:window-inactive,
-.viewport::-webkit-scrollbar-thumb:window-inactive,
-.view::-webkit-scrollbar-thumb:window-inactive,
-.logbody::-webkit-scrollbar-thumb:window-inactive,
-*::-webkit-scrollbar-thumb:window-inactive{
+.logbody::-webkit-scrollbar-thumb:active{
   background:#ff0000 !important;
   background-color:#ff0000 !important;
   box-shadow:inset 0 0 0 999px #ff0000 !important;
@@ -394,29 +274,21 @@ body::-webkit-scrollbar-thumb:window-inactive,
   filter:none !important;
 }
 
-html::-webkit-scrollbar-button,
-body::-webkit-scrollbar-button,
-.viewport::-webkit-scrollbar-button,
-.view::-webkit-scrollbar-button,
-.logbody::-webkit-scrollbar-button,
-*::-webkit-scrollbar-button,
-html::-webkit-scrollbar-button:hover,
-body::-webkit-scrollbar-button:hover,
-.viewport::-webkit-scrollbar-button:hover,
-.view::-webkit-scrollbar-button:hover,
-.logbody::-webkit-scrollbar-button:hover,
-*::-webkit-scrollbar-button:hover,
-html::-webkit-scrollbar-button:active,
-body::-webkit-scrollbar-button:active,
-.viewport::-webkit-scrollbar-button:active,
-.view::-webkit-scrollbar-button:active,
-.logbody::-webkit-scrollbar-button:active,
-*::-webkit-scrollbar-button:active{
-  background-color:#000000 !important;
-  opacity:1 !important;
-  filter:none !important;
+.viewport::-webkit-scrollbar-corner,
+.view::-webkit-scrollbar-corner,
+.logbody::-webkit-scrollbar-corner{
+  background:#000000 !important;
 }
 
+.viewport::-webkit-scrollbar-button,
+.view::-webkit-scrollbar-button,
+.logbody::-webkit-scrollbar-button{
+  width:0 !important;
+  height:0 !important;
+  display:none !important;
+}
+
+/* Final release: hotspot invisible */
 .hotspot:active{
   background:transparent !important;
 }

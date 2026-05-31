@@ -156,3 +156,10 @@ NEURO-STRUCTURAL SYNCHRONIZATION ___ 77 TRANSITION ARCHIVE
 - Monthly export range selector retained.
 - Storage key: nss77tr_record_v012_release.
 - Cache: nss77tr-record-v012-release.
+
+## V0.1.2 scrollpatch
+- Visible build / code name unchanged.
+- Root html/body scrollbars hidden and horizontal overflow suppressed.
+- Inner RECORD scrollbars remain red.
+- Mobile whole-page horizontal/vertical scroll reduced by containing scroll inside viewport/view.
+- Hotspot active overlay kept transparent.

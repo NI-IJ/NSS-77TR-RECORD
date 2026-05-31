@@ -163,3 +163,14 @@ NEURO-STRUCTURAL SYNCHRONIZATION ___ 77 TRANSITION ARCHIVE
 - Inner RECORD scrollbars remain red.
 - Mobile whole-page horizontal/vertical scroll reduced by containing scroll inside viewport/view.
 - Hotspot active overlay kept transparent.
+
+## V0.1.2 sessiontimefix
+- Visible build / storage / cache unchanged.
+- Removed bold rendering from Session time lines in RECORD log rendering.
+- Existing title/section emphasis remains unchanged.
+
+## V0.1.2 finalseed
+- Visible build / storage / cache unchanged.
+- Replaced seedData with uploaded nss77tr_record_all_2026-05-31.json.
+- Keeps Session time non-bold rendering.
+- Intended as final V0.1.2 data-seed package.

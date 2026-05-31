@@ -14,3 +14,11 @@
 - If no explicit Rest / Delay logs exist, rest/delay is month days minus sessions.
 - Archive/detail metadata displays `N sessions · M rest/delay`.
 - Session time remains non-bold.
+
+
+## Preview icon fix 0.1.3-preview-icon-fix
+- Added explicit favicon / apple-touch-icon / og:image / twitter:image tags.
+- Manifest icons fixed to icon-192.png and icon-512.png.
+- Theme color fixed to black.
+- Service worker cache name bumped where available.
+- Core app logic unchanged.

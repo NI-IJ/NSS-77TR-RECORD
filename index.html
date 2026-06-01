@@ -320,6 +320,70 @@ body{
   }
 }
 
+
+/* Panel/list scroll fix: dashboard/history/archive containers */
+.panel.active,
+.modal.active,
+.overlay.active,
+.drawer.active {
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  -webkit-overflow-scrolling: touch !important;
+  overscroll-behavior: contain !important;
+}
+
+#dash,
+#dashboard,
+#archive,
+#history,
+#historyPanel,
+#archivePanel,
+#viewPanel,
+#recordPanel,
+#dashList,
+#historyList,
+#archiveList,
+#recordList,
+.blocks,
+.blockList,
+.historyList,
+.archiveList,
+.list,
+.scrollList {
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+.item,
+.card,
+.recordDoc,
+.logbody,
+.excerpt {
+  max-height: none;
+}
+
+textarea,
+pre,
+.viewer,
+.viewBody {
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .panel.active,
+  .modal.active,
+  #historyPanel,
+  #archivePanel,
+  #viewPanel,
+  #recordPanel {
+    max-height: 100vh !important;
+    overflow-y: auto !important;
+  }
+}
+
 </style>
 </head>
 <body>

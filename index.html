@@ -482,6 +482,46 @@ pre,
   }
 }
 
+
+/* LOAD / SAVE sync panel */
+.syncBox{
+  margin-top:12px !important;
+  padding:10px !important;
+  border:1px solid rgba(255,0,0,.34) !important;
+  background:rgba(0,0,0,.42) !important;
+}
+.syncRow{
+  display:grid !important;
+  grid-template-columns:auto 1fr !important;
+  gap:10px !important;
+  align-items:center !important;
+  margin-bottom:10px !important;
+}
+.syncLabel{
+  color:#ff0000 !important;
+  font-size:12px !important;
+  letter-spacing:.12em !important;
+}
+.syncKey{
+  width:100% !important;
+  min-width:0 !important;
+  box-sizing:border-box !important;
+  background:rgba(0,0,0,.72) !important;
+  border:1px solid rgba(255,255,255,.18) !important;
+  color:#e8e8e8 !important;
+  padding:9px 10px !important;
+  font-family:inherit !important;
+  font-size:13px !important;
+}
+.syncActions{
+  display:grid !important;
+  grid-template-columns:1fr 1fr !important;
+  gap:10px !important;
+}
+.syncActions button{
+  width:100% !important;
+}
+
 </style>
 </head>
 <body>
@@ -502,6 +542,16 @@ pre,
       <button class="redbtn" onclick="exportJson()">EXPORT JSON</button>
       <button onclick="exportPdf()">EXPORT PDF</button>
       <button onclick="showView('dash')">DASH</button>
+    </div>
+    <div class="syncBox">
+      <div class="syncRow">
+        <span class="syncLabel">SYNC KEY</span>
+        <input id="recordSyncKey" class="syncKey" type="password" autocomplete="off" placeholder="key" oninput="saveRecordSyncKey()" />
+      </div>
+      <div class="syncActions">
+        <button onclick="loadRecordCloud()">LOAD</button>
+        <button class="redbtn" onclick="saveRecordCloud()">SAVE</button>
+      </div>
     </div>
   </div>
 </section>
@@ -933,8 +983,58 @@ window.onload=()=>setTimeout(()=>window.print(),250);
 function downloadBlob(blob,name){const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=name;a.click();URL.revokeObjectURL(a.href);}
 function importJson(ev){const file=ev.target.files?.[0];if(!file)return;const reader=new FileReader();reader.onload=()=>{try{state=normalize(JSON.parse(reader.result));saveState();render();toast("Imported");}catch(e){toast("Import failed")}};reader.readAsText(file);ev.target.value="";}
 function resetAll(){if(!confirm("Reset all local records?"))return;localStorage.removeItem(STORAGE_KEY);state=normalize(JSON.parse(JSON.stringify(DEFAULT)));render();toast("Reset");}
+
+const SYNC_API_URL="https://nsd-6-sync-api.vercel.app/api/sync";
+const SYNC_KEY_STORAGE="nsd6_sync_key";
+function initRecordSyncKey(){
+  const el=document.getElementById("recordSyncKey");
+  if(el) el.value=localStorage.getItem(SYNC_KEY_STORAGE)||"";
+}
+function saveRecordSyncKey(){
+  const el=document.getElementById("recordSyncKey");
+  if(el) localStorage.setItem(SYNC_KEY_STORAGE, el.value.trim());
+}
+function getRecordSyncKey(){
+  const el=document.getElementById("recordSyncKey");
+  const key=(el&&el.value.trim()) || localStorage.getItem(SYNC_KEY_STORAGE) || "";
+  if(key) localStorage.setItem(SYNC_KEY_STORAGE,key);
+  return key;
+}
+async function loadRecordCloud(){
+  const key=getRecordSyncKey();
+  if(!key){toast("SYNC KEY missing");return;}
+  try{
+    toast("Loading...");
+    const res=await fetch(SYNC_API_URL+"?target=record",{method:"GET",headers:{"X-Sync-Key":key}});
+    const json=await res.json();
+    if(!res.ok || !json.ok) throw new Error(json.error||("HTTP "+res.status));
+    state=normalize(json.data);
+    saveState();
+    render();
+    initRecordSyncKey();
+    toast("Loaded");
+  }catch(err){
+    console.error(err);
+    toast("Load failed");
+  }
+}
+async function saveRecordCloud(){
+  const key=getRecordSyncKey();
+  if(!key){toast("SYNC KEY missing");return;}
+  try{
+    toast("Saving...");
+    const res=await fetch(SYNC_API_URL+"?target=record",{method:"POST",headers:{"Content-Type":"application/json","X-Sync-Key":key},body:JSON.stringify({target:"record",data:state})});
+    const json=await res.json();
+    if(!res.ok || !json.ok) throw new Error(json.error||("HTTP "+res.status));
+    toast("Saved cloud");
+  }catch(err){
+    console.error(err);
+    toast("Save failed");
+  }
+}
+
 function toast(msg){const el=document.getElementById("toast");el.textContent=msg;el.classList.add("show");setTimeout(()=>el.classList.remove("show"),1400);}
 function setScale(){const stage=document.getElementById("stage");const rect=stage.getBoundingClientRect();document.documentElement.style.setProperty("--scale",rect.width/941);}
-window.addEventListener("resize",setScale);window.addEventListener("orientationchange",()=>setTimeout(setScale,250));initState().then(()=>{ clearEditor(); setScale(); render(); });
+window.addEventListener("resize",setScale);window.addEventListener("orientationchange",()=>setTimeout(setScale,250));initState().then(()=>{ clearEditor(); setScale(); render(); initRecordSyncKey(); });
 </script>
 </body></html>

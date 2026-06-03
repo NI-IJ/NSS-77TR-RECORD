@@ -687,6 +687,21 @@ select,
   box-shadow:none !important;
 }
 
+
+/* AUTO SYNC auth indicator fix */
+.syncAutoText{
+  color:#ff0000 !important;
+  text-shadow:none !important;
+  filter:none !important;
+  box-shadow:none !important;
+}
+.syncAutoText.ok{
+  color:rgb(25,255,0) !important;
+  text-shadow:none !important;
+  filter:none !important;
+  box-shadow:none !important;
+}
+
 </style>
 </head>
 <body>
@@ -711,7 +726,7 @@ select,
     <div class="syncBox">
       <div class="syncRow">
         <span class="syncLabel">SYNC KEY</span>
-        <input id="recordSyncKey" class="syncKey" type="password" autocomplete="off" placeholder="key" oninput="saveRecordSyncKey(); scheduleRecordAuthLoad();" />
+        <input id="recordSyncKey" class="syncKey" type="password" autocomplete="off" placeholder="key" oninput="saveRecordSyncKey(); scheduleRecordAuthCheck();" />
         <span id="recordAutoSyncText" class="syncAutoText">AUTO SYNC</span>
       </div>
     </div>
@@ -1154,13 +1169,15 @@ function initRecordSyncKey(){
 }
 function saveRecordSyncKey(){
   const el=document.getElementById("recordSyncKey");
-  if(el) localStorage.setItem(SYNC_KEY_STORAGE, el.value.trim());
+  if(!el) return;
+  const value=el.value.trim();
+  if(value) localStorage.setItem(SYNC_KEY_STORAGE, value);
+  else localStorage.removeItem(SYNC_KEY_STORAGE);
 }
 function getRecordSyncKey(){
   const el=document.getElementById("recordSyncKey");
-  const key=(el&&el.value.trim()) || localStorage.getItem(SYNC_KEY_STORAGE) || "";
-  if(key) localStorage.setItem(SYNC_KEY_STORAGE,key);
-  return key;
+  if(el) return el.value.trim();
+  return localStorage.getItem(SYNC_KEY_STORAGE) || "";
 }
 
 const SYNC_AUTO_STORAGE="nsd6_auto_sync";
@@ -1173,10 +1190,29 @@ function setRecordAutoSyncUI(ok=false){
   if(!el) return;
   el.classList.toggle("ok", !!ok);
 }
-function scheduleRecordAuthLoad(){
+function scheduleRecordAuthCheck(){
   clearTimeout(recordAuthLoadTimer);
-  recordAuthLoadTimer=setTimeout(()=>{ if(getRecordSyncKey()) loadRecordCloud(true); else setRecordAutoSyncUI(false); }, 700);
+  const key=getRecordSyncKey();
+  if(!key){ setRecordAutoSyncUI(false); return; }
+  recordAuthLoadTimer=setTimeout(()=>checkRecordAuth(true), 700);
 }
+async function checkRecordAuth(silent=false){
+  const key=getRecordSyncKey();
+  if(!key){ setRecordAutoSyncUI(false); return false; }
+  try{
+    const res=await fetch(SYNC_API_URL+"?auth=1",{method:"GET",headers:{"X-Sync-Key":key}});
+    const json=await res.json();
+    if(!res.ok || !json.ok) throw new Error(json.error||("HTTP "+res.status));
+    setRecordAutoSyncUI(true);
+    return true;
+  }catch(err){
+    console.error(err);
+    setRecordAutoSyncUI(false);
+    if(!silent) toast("Auth failed");
+    return false;
+  }
+}
+
 
 function scheduleRecordAutoSave(){
   if(recordSyncHydrating || !isRecordAutoSyncOn()) return;
@@ -1198,8 +1234,7 @@ async function loadRecordCloud(silent=false){
     recordSyncHydrating=false;
     render();
     initRecordSyncKey();
-    setRecordAutoSyncUI(true);
-    toast(silent ? "Auto synced" : "Loaded");
+    toast(silent ? "Auto loaded" : "Loaded");
   }catch(err){
     console.error(err);
     setRecordAutoSyncUI(false); toast("Load failed · "+String(err.message||err).slice(0,42));
@@ -1213,7 +1248,7 @@ async function saveRecordCloud(silent=false){
     const res=await fetch(SYNC_API_URL+"?target=record",{method:"POST",headers:{"Content-Type":"application/json","X-Sync-Key":key},body:JSON.stringify({target:"record",data:state})});
     const json=await res.json();
     if(!res.ok || !json.ok) throw new Error(json.error||("HTTP "+res.status));
-    setRecordAutoSyncUI(true); toast(silent ? "Auto synced" : "Saved cloud");
+    setRecordAutoSyncUI(true); setRecordAutoSyncUI(true); toast(silent ? "Auto synced" : "Saved cloud");
   }catch(err){
     console.error(err);
     setRecordAutoSyncUI(false); toast("Save failed · "+String(err.message||err).slice(0,42));
@@ -1222,6 +1257,6 @@ async function saveRecordCloud(silent=false){
 
 function toast(msg){const el=document.getElementById("toast");el.textContent=msg;el.classList.add("show");setTimeout(()=>el.classList.remove("show"),1400);}
 function setScale(){const stage=document.getElementById("stage");const rect=stage.getBoundingClientRect();document.documentElement.style.setProperty("--scale",rect.width/941);}
-window.addEventListener("resize",setScale);window.addEventListener("orientationchange",()=>setTimeout(setScale,250));initState().then(async()=>{ clearEditor(); setScale(); render(); initRecordSyncKey(); setRecordAutoSyncUI(false); await loadRecordCloud(true); });
+window.addEventListener("resize",setScale);window.addEventListener("orientationchange",()=>setTimeout(setScale,250));initState().then(async()=>{ clearEditor(); setScale(); render(); initRecordSyncKey(); setRecordAutoSyncUI(false); await loadRecordCloud(true); if(getRecordSyncKey()) await checkRecordAuth(true); });
 </script>
 </body></html>

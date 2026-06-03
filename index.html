@@ -771,11 +771,26 @@ select,
   box-shadow:none !important;
 }
 
+
+/* dashboard sync image indicator */
+.syncIndicatorImg{
+  position:absolute;
+  z-index:4;
+  width:calc(28px * var(--scale));
+  height:auto;
+  pointer-events:none;
+  user-select:none;
+}
+#recordDashSyncIndicator{
+  left:calc(532px * var(--scale));
+  top:calc(216px * var(--scale));
+}
+
 </style>
 </head>
 <body>
 <div class="stage" id="stage"><img src="BASE.png" class="skin" alt="NSS-77TR RECORD" /><div class="layer">
-<div id="ovBuild" class="txt">V0.1.4</div>
+<div id="ovBuild" class="txt">V0.1.4</div><img id="recordDashSyncIndicator" class="syncIndicatorImg" src="SYNC_INDICATOR_RED.png" alt="SYNC" />
 <button id="hsDash" class="hotspot" onclick="showView('dash')">DASH</button><button id="hsArchive" class="hotspot" onclick="showView('archive')">ARCHIVE</button><button id="hsLog" class="hotspot" onclick="showView('log')">LOG</button><button id="hsData" class="hotspot" onclick="showView('data')">DATA</button>
 <main class="viewport">
 <section id="view-dash" class="view active">
@@ -1255,9 +1270,11 @@ let recordSyncHydrating=false;
 let recordAutoSaveTimer=null;
 function isRecordAutoSyncOn(){return !!getRecordSyncKey();}
 function setRecordAutoSyncUI(ok=false){
+  const on=!!ok;
   const el=document.getElementById("recordAutoSyncText");
-  if(!el) return;
-  el.classList.toggle("ok", !!ok);
+  if(el) el.classList.toggle("ok", on);
+  const img=document.getElementById("recordDashSyncIndicator");
+  if(img) img.src=on ? "SYNC_INDICATOR_GREEN.png" : "SYNC_INDICATOR_RED.png";
 }
 function scheduleRecordAuthCheck(){
   clearTimeout(recordAuthLoadTimer);

@@ -702,6 +702,38 @@ select,
   box-shadow:none !important;
 }
 
+
+/* AUTH indicator pure red / strict pass */
+.syncBox{
+  border-color:#ff0000 !important;
+  box-shadow:none !important;
+}
+.syncLabel{
+  color:#ff0000 !important;
+  text-shadow:none !important;
+  filter:none !important;
+  box-shadow:none !important;
+}
+.syncAutoText{
+  color:#ff0000 !important;
+  text-shadow:none !important;
+  filter:none !important;
+  box-shadow:none !important;
+}
+.syncAutoText.ok{
+  color:rgb(25,255,0) !important;
+  text-shadow:none !important;
+  filter:none !important;
+  box-shadow:none !important;
+}
+.syncKey{
+  border-color:#ff0000 !important;
+  color:#ffffff !important;
+  text-shadow:none !important;
+  filter:none !important;
+  box-shadow:none !important;
+}
+
 </style>
 </head>
 <body>
@@ -1200,9 +1232,9 @@ async function checkRecordAuth(silent=false){
   const key=getRecordSyncKey();
   if(!key){ setRecordAutoSyncUI(false); return false; }
   try{
-    const res=await fetch(SYNC_API_URL+"?auth=1",{method:"GET",headers:{"X-Sync-Key":key}});
+    const res=await fetch(SYNC_API_URL+"?auth=1&target=record",{method:"GET",headers:{"X-Sync-Key":key}});
     const json=await res.json();
-    if(!res.ok || !json.ok) throw new Error(json.error||("HTTP "+res.status));
+    if(!res.ok || !json.ok || json.access!=="auth-ok") throw new Error(json.error||("Auth check failed"));
     setRecordAutoSyncUI(true);
     return true;
   }catch(err){
@@ -1212,6 +1244,7 @@ async function checkRecordAuth(silent=false){
     return false;
   }
 }
+
 
 
 function scheduleRecordAutoSave(){
